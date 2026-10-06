@@ -1,7 +1,10 @@
+import Login from "./pages/Login"
 
 const App = () => {
   return (
-    <div className="bg-red-600">App</div>
+    <>
+      <Login />
+    </>
   )
 }
 
