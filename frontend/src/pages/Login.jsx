@@ -37,7 +37,8 @@ const Login = () => {
   const onSubmit = async (values) => {
     try {
       // Replace with your real API call, e.g. await axios.post("/login", values)
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // setError("root", { message: "backend" }); // Clear any previous root error
+      await new Promise((resolve) => setTimeout(resolve, 8000));
       console.log("Login payload:", values);
     } catch {
       setError("root", { message: "Invalid email or password" });
