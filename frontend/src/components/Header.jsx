@@ -1,7 +1,12 @@
+import HeroSection from "./HeroSection"
+import Navbar from "./Navbar"
 
 const Header = () => {
   return (
-    <div>Header</div>
+    <>
+      <Navbar />
+      <HeroSection />
+    </>
   )
 }
 
