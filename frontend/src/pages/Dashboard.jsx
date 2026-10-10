@@ -221,7 +221,7 @@ function Dashboard() {
               Recent orders
             </h2>
             <div className="mt-4 overflow-x-auto">
-              <table className="w-full min-w-[480px] text-left text-sm">
+              <table className="w-full min-w-120 text-left text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-500">
                     <th className="py-3 pr-4 font-medium">Order</th>
