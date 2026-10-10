@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const links = [
   { label: "Services", href: "/services" },
@@ -28,42 +29,42 @@ function Navbar() {
       <nav className="mx-auto flex h-16 w-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
         {/* Left: logo (flex-1 keeps the center links truly centered) */}
         <div className="flex flex-1 items-center">
-          <a href="/" className="flex items-center gap-2">
+          <NavLink to="/" className="flex items-center gap-2">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
               L
             </span>
             <span className="text-lg font-semibold text-slate-900">Logo</span>
-          </a>
+          </NavLink>
         </div>
 
         {/* Center: links (desktop) */}
         <ul className="hidden items-center gap-6 md:flex lg:gap-10">
           {links.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
+              <NavLink
+                to={link.href}
                 className="text-sm font-medium text-slate-600 transition hover:text-indigo-600"
               >
                 {link.label}
-              </a>
+              </NavLink>
             </li>
           ))}
         </ul>
 
         {/* Right: auth actions (desktop) */}
         <div className="hidden flex-1 items-center justify-end gap-3 md:flex">
-          <a
-            href="/login"
+          <NavLink
+            to="/login"
             className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:text-indigo-600"
           >
             Login
-          </a>
-          <a
-            href="/register"
+          </NavLink>
+          <NavLink
+            to="/register"
             className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
           >
             Register
-          </a>
+          </NavLink>
         </div>
 
         {/* Hamburger (mobile) */}
@@ -105,31 +106,31 @@ function Navbar() {
             <ul className="flex flex-col">
               {links.map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
+                  <NavLink
+                    to={link.href}
                     onClick={() => setOpen(false)}
                     className="block rounded-lg px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-100"
                   >
                     {link.label}
-                  </a>
+                  </NavLink>
                 </li>
               ))}
             </ul>
             <div className="mt-3 grid grid-cols-2 gap-3">
-              <a
-                href="/login"
+              <NavLink
+                to="/login"
                 onClick={() => setOpen(false)}
                 className="rounded-lg border border-slate-300 px-4 py-3 text-center text-sm font-medium text-slate-700 hover:bg-slate-50"
               >
                 Login
-              </a>
-              <a
-                href="/register"
+              </NavLink>
+              <NavLink
+                to="/register"
                 onClick={() => setOpen(false)}
                 className="rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700"
               >
                 Register
-              </a>
+              </NavLink>
             </div>
           </div>
         </div>

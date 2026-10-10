@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Link } from "react-router-dom";
  
 const registerSchema = z
   .object({
@@ -203,6 +204,13 @@ const Register = () => {
             </button>
           </div>
         </Field>
+
+        <span className="text-sm flex justify-end text-slate-500">
+          Already have an account?
+          <Link to="/login" className="text-sm mb-4 font-medium text-indigo-600 hover:text-indigo-700">
+           Log in
+        </Link>
+        </span>
  
         <button
           type="submit"

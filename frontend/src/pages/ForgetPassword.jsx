@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Link } from "react-router-dom";
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -125,9 +126,9 @@ const ForgetPassword = () => {
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Remembered it?{" "}
-          <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-700">
+          <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-700">
             Back to login
-          </a>
+          </Link>
         </p>
       </form>
     </div>
