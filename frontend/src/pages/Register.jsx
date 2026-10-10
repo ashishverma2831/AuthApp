@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
  
 const registerSchema = z
   .object({
@@ -56,7 +57,10 @@ function Field({ id, label, error, children }) {
 
 const Register = () => {
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
+  });
  
   const {
     register,
@@ -79,9 +83,11 @@ const Register = () => {
     try {
       // Replace with your real API call, e.g. await axios.post("/register", payload)
       await new Promise((resolve) => setTimeout(resolve, 800));
+      toast.success("Account created successfully!");
       console.log("Register payload:", payload);
       reset();
     } catch {
+      toast.error("Something went wrong. Please try again.");
       setError("root", { message: "Something went wrong. Please try again." });
     }
   };
@@ -93,9 +99,6 @@ const Register = () => {
         : "border-slate-300 focus:border-indigo-500 focus:ring-indigo-200"
     }`;
  
-  const passwordType = showPassword ? "text" : "password";
- 
-
   return (
     <>
       <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-8">
@@ -159,7 +162,7 @@ const Register = () => {
           <div className="relative">
             <input
               id="password"
-              type={passwordType}
+              type={showPassword.password ? "text" : "password"}
               autoComplete="new-password"
               placeholder="Create a password"
               aria-invalid={!!errors.password}
@@ -169,10 +172,10 @@ const Register = () => {
             />
             <button
               type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
+              onClick={() => setShowPassword((prev) => ({ ...prev, password: !prev.password }))}
               className="absolute inset-y-0 right-0 px-3 text-xs font-medium text-slate-500 hover:text-slate-700"
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword.password ? "Hide" : "Show"}
             </button>
           </div>
         </Field>
@@ -185,7 +188,7 @@ const Register = () => {
           <div className="relative">
           <input
             id="confirmPassword"
-            type={passwordType}
+            type={showPassword.confirmPassword ? "text" : "password"}
             autoComplete="new-password"
             placeholder="Re-enter your password"
             aria-invalid={!!errors.confirmPassword}
@@ -197,10 +200,10 @@ const Register = () => {
           />
           <button
               type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
+              onClick={() => setShowPassword((prev) => ({ ...prev, confirmPassword: !prev.confirmPassword }))}
               className="absolute inset-y-0 right-0 px-3 text-xs font-medium text-slate-500 hover:text-slate-700"
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword.confirmPassword ? "Hide" : "Show"}
             </button>
           </div>
         </Field>
