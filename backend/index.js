@@ -13,10 +13,14 @@ connectDB();
 app.use(express.json());
 
 // import routes
-// const userRouter = require('./routers/userRouter');
+const errorHandler = require('./middlewares/errorMiddleware');
+const userRouter = require('./routers/userRouter');
 
 // Routes
-// app.use('/api/users', userRouter);
+app.use('/api/users', userRouter);
+
+// Error handling middleware
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the AuthApp API' });

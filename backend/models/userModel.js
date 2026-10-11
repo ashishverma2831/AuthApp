@@ -10,16 +10,18 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: [true, 'Email is required'],          
-    pattern: [ /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please enter a valid email' ],
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please enter a valid email'],
     unique: [true, 'Email already exists'],
     trim: true,
+    lowercase: true,
   },
   password: {
     type: String,
     required: [true, 'Password is required'],
     minlength: [8, 'Password must be at least 8 characters long'],
-    pattern: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter, one lowercase letter, and one number'],
+    match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter, one lowercase letter, and one number'],
     trim: true,
+    select: false, // Exclude password from query results by default
   },
 });
 
