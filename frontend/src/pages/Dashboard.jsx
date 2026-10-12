@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getUserProfile } from "../api/userApi";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", active: true },
@@ -41,13 +42,31 @@ const statusStyles = {
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   // Close the mobile sidebar on Escape
   useEffect(() => {
+    let isActive = true;
     const onKeyDown = (e) => e.key === "Escape" && setSidebarOpen(false);
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+
+    getUserProfile()
+      .then((data) => {
+        if (isActive) setUserData(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user profile:", error);
+      });
+
+    return () => {
+      isActive = false;
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
+
+  
+
+  console.log("User Data:", userData); // Debugging line
 
   return (
     <div className="min-h-screen bg-slate-100 text-left">

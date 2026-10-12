@@ -82,7 +82,15 @@ const Register = () => {
   const onSubmit = async ({ ...payload }) => {
     try {
       // Replace with your real API call, e.g. await axios.post("/register", payload)
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const apiBaseUrl = import.meta.env.VITE_CLIENT_API_URL;
+      await fetch(`${apiBaseUrl}/api/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      setError("root", { message: "" }); // Clear any previous root error
       toast.success("Account created successfully!");
       console.log("Register payload:", payload);
       reset();

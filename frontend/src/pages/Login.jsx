@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const loginSchema = z.object({
   email: z
@@ -22,7 +23,8 @@ const loginSchema = z.object({
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate();
+  
   const {
     register,
     handleSubmit,
@@ -38,7 +40,8 @@ const Login = () => {
     try {
       // Replace with your real API call, e.g. await axios.post("/login", values)
       // setError("root", { message: "backend" }); // Clear any previous root error
-      await new Promise((resolve) => setTimeout(resolve, 8000));
+      toast.success("Login successful!"); // Show success toast
+      navigate("/dashboard"); // Redirect to dashboard after successful login
       console.log("Login payload:", values);
     } catch {
       setError("root", { message: "Invalid email or password" });
