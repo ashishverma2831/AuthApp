@@ -24,7 +24,7 @@ const loginSchema = z.object({
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  
+
   const {
     register,
     handleSubmit,
@@ -38,13 +38,25 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      // Replace with your real API call, e.g. await axios.post("/login", values)
-      // setError("root", { message: "backend" }); // Clear any previous root error
-      toast.success("Login successful!"); // Show success toast
+      const apiBaseUrl = import.meta.env.VITE_CLIENT_API_URL;
+      const res = await fetch(`${apiBaseUrl}/api/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies in the request
+        body: JSON.stringify(values),
+      }); 
+      
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Invalid email or password");
+      }
       navigate("/dashboard"); // Redirect to dashboard after successful login
-      console.log("Login payload:", values);
-    } catch {
-      setError("root", { message: "Invalid email or password" });
+      toast.success("Login successful!"); // Show success toast
+      console.log("Login payload:", data); // Debugging line
+    } catch (error) {
+      setError("root", { message: error.message || "Login failed" });
     }
   };
 

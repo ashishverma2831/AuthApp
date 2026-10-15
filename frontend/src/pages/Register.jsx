@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
  
 const registerSchema = z
   .object({
@@ -61,6 +62,7 @@ const Register = () => {
     password: false,
     confirmPassword: false,
   });
+  const navigate = useNavigate();
  
   const {
     register,
@@ -91,6 +93,7 @@ const Register = () => {
         body: JSON.stringify(payload),
       });
       setError("root", { message: "" }); // Clear any previous root error
+      navigate("/login"); // Redirect to login page after successful registration
       toast.success("Account created successfully!");
       console.log("Register payload:", payload);
       reset();

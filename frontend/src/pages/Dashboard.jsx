@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserProfile } from "../api/userApi";
+import axios from "axios";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", active: true },
@@ -44,28 +44,29 @@ function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
 
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_CLIENT_API_URL}/api/users/profile`, { withCredentials: true });
+      setUserData(response.data.user);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+  fetchUserData(); // Fetch user data when the component mounts
+  console.log("User Data:", userData); // Debugging line
+
   // Close the mobile sidebar on Escape
   useEffect(() => {
-    let isActive = true;
     const onKeyDown = (e) => e.key === "Escape" && setSidebarOpen(false);
     window.addEventListener("keydown", onKeyDown);
-
-    getUserProfile()
-      .then((data) => {
-        if (isActive) setUserData(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user profile:", error);
-      });
-
+   // Fetch user data when the component mounts
     return () => {
-      isActive = false;
       window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
 
   
-
+    
   console.log("User Data:", userData); // Debugging line
 
   return (

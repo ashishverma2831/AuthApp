@@ -40,17 +40,16 @@ const userController = {
             const { password, ...userWithoutPassword } = existingUser.toObject(); // Exclude password from response
             
             // You can generate a JWT token here if needed and include it in the response
-            const token = jwt.sign({ id: existingUser._id }, process.env.JWT_ACCESS_SECRET, { expiresIn: '1h' });
+            const accessToken = jwt.sign({ id: existingUser._id }, process.env.JWT_ACCESS_SECRET, { expiresIn: '1h' });
             const refreshToken = jwt.sign({ id: existingUser._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
-
-            localStorage.setItem('token', token);
-            localStorage.setItem('refreshToken', refreshToken);
-            res.cookie('token', token, { httpOnly: true });
+            console.log('Generated access token:', accessToken); // Debugging line
+            console.log('Generated refresh token:', refreshToken); // Debugging line
+            res.cookie('accessToken', accessToken, { httpOnly: true });
             res.cookie('refreshToken', refreshToken, { httpOnly: true });                                                                                                                                   
-            res.status(200).json({ message: 'Login successful', user: userWithoutPassword, token });
+            res.status(200).json({ message: 'Login successful', user: userWithoutPassword, accessToken, refreshToken });
 
         } catch (error) {
-            next(error);
+            throw new Error(error.message);
         }
     },
     getUserProfile: async (req, res) => {
@@ -62,7 +61,7 @@ const userController = {
             }
             res.status(200).json({ user });
         } catch (error) {
-            next(error);
+            throw new Error(error.message);
         }
     },
     updateUserProfile: async (req, res) => {},
