@@ -24,10 +24,6 @@ function Navbar() {
     };
   }, []);
 
-  useEffect(() => {
-
-  }, []);
-
   
 
   return (

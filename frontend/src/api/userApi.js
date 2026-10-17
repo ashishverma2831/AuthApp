@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const apiBaseUrl = import.meta.env.VITE_CLIENT_API_URL;
+import axiosClient from "./axiosClient";
 
 /**
  * Fetches the authenticated user's profile.
@@ -9,9 +7,7 @@ const apiBaseUrl = import.meta.env.VITE_CLIENT_API_URL;
  * identify the current user.
  */
 export async function fetchUserData() {
-  const response = await axios.get(`${apiBaseUrl}/api/users/profile`, {
-    withCredentials: true,
-  });
+  const response = await axiosClient.get("/api/users/profile");
 
   return response.data.user;
 }
