@@ -6,13 +6,15 @@ import Home from "./pages/Home"
 import Footer from "./components/Footer"
 import ForgetPassword from "./pages/ForgetPassword"
 import ProtectedRoute from "./components/ProtectedRoute"
+import { AuthProvider } from "./context/AuthProvider"
 
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Navbar element={<ProtectedRoute />} />
+        <AuthProvider>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -24,6 +26,7 @@ const App = () => {
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
         <Footer />
+        </AuthProvider>
       </BrowserRouter>
     </>
   )

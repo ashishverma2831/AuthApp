@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 
 const links = [
   { label: "Services", href: "/services" },
@@ -9,6 +10,7 @@ const links = [
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const { user, isLoading } = useAuth();
 
   // Close the mobile menu on Escape, and when the screen grows to desktop size
   useEffect(() => {
@@ -55,18 +57,29 @@ function Navbar() {
 
         {/* Right: auth actions (desktop) */}
         <div className="hidden flex-1 items-center justify-end gap-3 md:flex">
-          <NavLink
-            to="/login"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:text-indigo-600"
-          >
-            Login
-          </NavLink>
-          <NavLink
-            to="/register"
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
-          >
-            Register
-          </NavLink>
+          {!isLoading && (user ? (
+            <NavLink
+              to="/dashboard"
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
+            >
+              {user.username}
+            </NavLink>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:text-indigo-600"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/register"
+                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
+              >
+                Register
+              </NavLink>
+            </>
+          ))}
         </div>
 
         {/* Hamburger (mobile) */}
@@ -118,22 +131,32 @@ function Navbar() {
                 </li>
               ))}
             </ul>
-            <div className="mt-3 grid grid-cols-2 gap-3">
+            {!isLoading && (user ? (
               <NavLink
-                to="/login"
+                to="/dashboard"
                 onClick={() => setOpen(false)}
-                className="rounded-lg border border-slate-300 px-4 py-3 text-center text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="mt-3 block rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700"
               >
-                Login
+                {user.username}'s account
               </NavLink>
-              <NavLink
-                to="/register"
-                onClick={() => setOpen(false)}
-                className="rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700"
-              >
-                Register
-              </NavLink>
-            </div>
+            ) : (
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <NavLink
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg border border-slate-300 px-4 py-3 text-center text-sm font-medium text-slate-700 hover:bg-slate-50"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700"
+                >
+                  Register
+                </NavLink>
+              </div>
+            ))}
           </div>
         </div>
       </div>

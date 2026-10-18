@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/useAuth";
 
 const loginSchema = z.object({
   email: z
@@ -24,6 +25,7 @@ const loginSchema = z.object({
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const {
     register,
@@ -52,6 +54,7 @@ const Login = () => {
       if (!res.ok) {
         throw new Error(data.message || "Invalid email or password");
       }
+      setUser(data.user);
       navigate("/dashboard"); // Redirect to dashboard after successful login
       toast.success("Login successful!"); // Show success toast
       console.log("Login payload:", data); // Debugging line
