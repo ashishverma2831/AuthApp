@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/useAuth";
+import axiosClient from "../api/axiosClient";
 
 const loginSchema = z.object({
   email: z
@@ -40,26 +41,14 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_CLIENT_API_URL;
-      const res = await fetch(`${apiBaseUrl}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Include cookies in the request
-        body: JSON.stringify(values),
-      }); 
-      
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "Invalid email or password");
-      }
+      const { data } = await axiosClient.post("/api/users/login", values);
       setUser(data.user);
-      navigate("/dashboard"); // Redirect to dashboard after successful login
-      toast.success("Login successful!"); // Show success toast
-      console.log("Login payload:", data); // Debugging line
+      toast.success("Login successful!");
+      navigate("/dashboard");
     } catch (error) {
-      setError("root", { message: error.message || "Login failed" });
+      setError("root", {
+        message: error.response?.data?.message || error.message || "Login failed",
+      });
     }
   };
 

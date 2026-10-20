@@ -32,21 +32,23 @@ const userController = {
                 return res.status(404).json({ message: 'User with that email not found' });
             }
             const isMatch = await bcrypt.compare(user.password, existingUser.password);
-            console.log('Password match:', isMatch); // Debugging line
             if(!isMatch) {
                 return res.status(401).json({ message: 'Invalid credentials' });
             }
 
             const { password, ...userWithoutPassword } = existingUser.toObject(); // Exclude password from response
             
-            // You can generate a JWT token here if needed and include it in the response
             const accessToken = jwt.sign({ id: existingUser._id }, process.env.JWT_ACCESS_SECRET, { expiresIn: '1h' });
             const refreshToken = jwt.sign({ id: existingUser._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
-            console.log('Generated access token:', accessToken); // Debugging line
-            console.log('Generated refresh token:', refreshToken); // Debugging line
-            res.cookie('accessToken', accessToken, { httpOnly: true });
-            res.cookie('refreshToken', refreshToken, { httpOnly: true });                                                                                                                                   
-            res.status(200).json({ message: 'Login successful', user: userWithoutPassword, accessToken, refreshToken });
+            const cookieOptions = {
+                httpOnly: true,
+                sameSite: 'lax',
+                secure: process.env.NODE_ENV === 'production',
+            };
+
+            res.cookie('accessToken', accessToken, cookieOptions);
+            res.cookie('refreshToken', refreshToken, cookieOptions);
+            res.status(200).json({ message: 'Login successful', user: userWithoutPassword });
 
         } catch (error) {
             throw new Error(error.message);

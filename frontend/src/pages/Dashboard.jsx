@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", active: true },
@@ -42,32 +43,17 @@ const statusStyles = {
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userData, setUserData] = useState(null);
-
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_CLIENT_API_URL}/api/users/profile`, { withCredentials: true });
-      setUserData(response.data.user);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-  fetchUserData(); // Fetch user data when the component mounts
-  console.log("User Data:", userData); // Debugging line
+  const { user } = useAuth();
+  const initials = user?.username?.slice(0, 2).toUpperCase() || "U";
 
   // Close the mobile sidebar on Escape
   useEffect(() => {
     const onKeyDown = (e) => e.key === "Escape" && setSidebarOpen(false);
     window.addEventListener("keydown", onKeyDown);
-   // Fetch user data when the component mounts
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
-
-  
-    
-  console.log("User Data:", userData); // Debugging line
 
   return (
     <div className="min-h-screen bg-slate-100 text-left">
@@ -112,12 +98,12 @@ function Dashboard() {
         </nav>
 
         <div className="border-t border-slate-200 p-4">
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
           >
-            Log out
-          </a>
+            Back to login
+          </Link>
         </div>
       </aside>
 
@@ -156,10 +142,10 @@ function Dashboard() {
             />
             <div className="flex items-center gap-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white">
-                JD
+                {initials}
               </span>
               <span className="hidden text-sm font-medium text-slate-700 sm:block">
-                John Doe
+                {user?.username || "Account"}
               </span>
             </div>
           </div>

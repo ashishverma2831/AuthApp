@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import axiosClient from "../api/axiosClient";
  
 const registerSchema = z
   .object({
@@ -35,6 +35,11 @@ const registerSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
+  })
+  .transform((data) => {
+    const values = { ...data };
+    delete values.confirmPassword;
+    return values;
   });
  
 function Field({ id, label, error, children }) {
@@ -81,25 +86,16 @@ const Register = () => {
     },
   });
 
-  const onSubmit = async ({ ...payload }) => {
+  const onSubmit = async (payload) => {
     try {
-      // Replace with your real API call, e.g. await axios.post("/register", payload)
-      const apiBaseUrl = import.meta.env.VITE_CLIENT_API_URL;
-      await fetch(`${apiBaseUrl}/api/users/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      setError("root", { message: "" }); // Clear any previous root error
-      navigate("/login"); // Redirect to login page after successful registration
+      await axiosClient.post("/api/users/register", payload);
+      navigate("/login");
       toast.success("Account created successfully!");
-      console.log("Register payload:", payload);
       reset();
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-      setError("root", { message: "Something went wrong. Please try again." });
+    } catch (error) {
+      const message = error.response?.data?.message || "Something went wrong. Please try again.";
+      toast.error(message);
+      setError("root", { message });
     }
   };
  
