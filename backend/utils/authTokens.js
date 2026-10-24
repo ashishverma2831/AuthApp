@@ -12,8 +12,11 @@ function getCookieOptions(maxAge) {
   };
 }
 
-function createTokens(userId) {
-  const payload = { id: userId.toString() };
+function createTokens(user) {
+  const payload = {
+    id: user._id.toString(),
+    role: user.role,
+  };
 
   return {
     accessToken: jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: '1h' }),

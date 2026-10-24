@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import axiosClient from "../api/axiosClient";
+import { registerUser } from "../api/userApi";
  
 const registerSchema = z
   .object({
@@ -88,7 +88,7 @@ const Register = () => {
 
   const onSubmit = async (payload) => {
     try {
-      await axiosClient.post("/api/users/register", payload);
+      await registerUser(payload);
       navigate("/login");
       toast.success("Account created successfully!");
       reset();

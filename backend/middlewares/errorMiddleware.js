@@ -1,6 +1,5 @@
-// middleware/errorHandler.js
 const errorHandler = (err, req, res, next) => {
-  console.error(err); // log the full thing server-side
+  console.error(err);
 
   let message = 'Internal Server Error';
   let status = err.statusCode || err.status || 500;

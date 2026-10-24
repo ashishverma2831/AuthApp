@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/useAuth";
+import { useAuth } from "../hooks/useAuth";
+import UserMenu from "./UserMenu";
 
 const links = [
   { label: "Services", href: "/services" },
@@ -58,12 +59,7 @@ function Navbar() {
         {/* Right: auth actions (desktop) */}
         <div className="hidden flex-1 items-center justify-end gap-3 md:flex">
           {!isLoading && (user ? (
-            <NavLink
-              to="/dashboard"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
-            >
-              {user.username}
-            </NavLink>
+            <UserMenu />
           ) : (
             <>
               <NavLink
@@ -132,13 +128,9 @@ function Navbar() {
               ))}
             </ul>
             {!isLoading && (user ? (
-              <NavLink
-                to="/dashboard"
-                onClick={() => setOpen(false)}
-                className="mt-3 block rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700"
-              >
-                {user.username}'s account
-              </NavLink>
+              <div className="mt-3 flex justify-end">
+                <UserMenu />
+              </div>
             ) : (
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <NavLink

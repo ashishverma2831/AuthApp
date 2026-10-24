@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/useAuth";
+import UserMenu from "../components/UserMenu";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", active: true },
@@ -43,8 +42,6 @@ const statusStyles = {
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user } = useAuth();
-  const initials = user?.username?.slice(0, 2).toUpperCase() || "U";
 
   // Close the mobile sidebar on Escape
   useEffect(() => {
@@ -97,14 +94,6 @@ function Dashboard() {
           ))}
         </nav>
 
-        <div className="border-t border-slate-200 p-4">
-          <Link
-            to="/login"
-            className="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-          >
-            Back to login
-          </Link>
-        </div>
       </aside>
 
       {/* Main area */}
@@ -140,14 +129,7 @@ function Dashboard() {
               aria-label="Search"
               className="hidden w-48 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 md:block lg:w-64"
             />
-            <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-medium text-white">
-                {initials}
-              </span>
-              <span className="hidden text-sm font-medium text-slate-700 sm:block">
-                {user?.username || "Account"}
-              </span>
-            </div>
+            <UserMenu />
           </div>
         </header>
 

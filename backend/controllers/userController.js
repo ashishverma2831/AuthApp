@@ -55,7 +55,7 @@ async function loginUser(req, res) {
     throw createHttpError(401, 'Invalid email or password');
   }
 
-  setAuthCookies(res, createTokens(user._id));
+  setAuthCookies(res, createTokens(user));
   return res.status(200).json({ message: 'Login successful', user: toPublicUser(user) });
 }
 
@@ -137,7 +137,7 @@ async function refreshAccessToken(req, res) {
     throw createHttpError(401, 'User account no longer exists');
   }
 
-  setAuthCookies(res, createTokens(user._id));
+  setAuthCookies(res, createTokens(user));
   return res.status(200).json({ message: 'Session refreshed' });
 }
 

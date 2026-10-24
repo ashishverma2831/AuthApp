@@ -4,8 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useAuth } from "../context/useAuth";
-import axiosClient from "../api/axiosClient";
+import { useAuth } from "../hooks/useAuth";
 
 const loginSchema = z.object({
   email: z
@@ -19,14 +18,13 @@ const loginSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Include at least one uppercase letter")
     .regex(/[a-z]/, "Include at least one lowercase letter")
-    .regex(/[0-9]/, "Include at least one number")
-    .regex(/[^A-Za-z0-9]/, "Include at least one special character"),
+    .regex(/[0-9]/, "Include at least one number"),
 });
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { login } = useAuth();
 
   const {
     register,
@@ -41,8 +39,7 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const { data } = await axiosClient.post("/api/users/login", values);
-      setUser(data.user);
+      await login(values);
       toast.success("Login successful!");
       navigate("/dashboard");
     } catch (error) {

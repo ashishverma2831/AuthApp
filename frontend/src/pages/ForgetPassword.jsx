@@ -15,24 +15,18 @@ const ForgetPassword = () => {
   const {
     register,
     handleSubmit,
-    reset,
-    getValues,
     setError,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     mode: "onTouched",
     defaultValues: { email: "" },
   });
 
-  const onSubmit = async (values) => {
-    try {
-      // Replace with your real API call, e.g. await axios.post("/forgot-password", values)
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      console.log("Forgot password payload:", values);
-    } catch {
-      setError("root", { message: "Something went wrong. Please try again." });
-    }
+  const onSubmit = () => {
+    setError("root", {
+      message: "Password reset is not available yet. Please contact support.",
+    });
   };
 
   const inputClass = (hasError) =>
@@ -41,33 +35,6 @@ const ForgetPassword = () => {
         ? "border-red-500 focus:ring-red-200"
         : "border-slate-300 focus:border-indigo-500 focus:ring-indigo-200"
     }`;
-
-  // Success state: shown after the request goes through
-  if (isSubmitSuccessful && !errors.root) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-        <div className="w-full max-w-sm rounded-2xl bg-white p-8 text-center shadow-md">
-          <h1 className="mb-2 text-2xl font-semibold text-slate-900">
-            Check your email
-          </h1>
-          <p className="mb-6 text-sm text-slate-500">
-            If an account exists for{" "}
-            <span className="font-medium text-slate-700">
-              {getValues("email")}
-            </span>
-            , we've sent a link to reset your password.
-          </p>
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
-          >
-            Use a different email
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
@@ -80,7 +47,7 @@ const ForgetPassword = () => {
           Forgot password?
         </h1>
         <p className="mb-6 text-sm text-slate-500">
-          Enter your email and we'll send you a link to reset your password.
+          Password recovery will be available once it is enabled on the server.
         </p>
 
         {errors.root && (
@@ -121,7 +88,7 @@ const ForgetPassword = () => {
           disabled={isSubmitting}
           className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSubmitting ? "Sending..." : "Send reset link"}
+          {isSubmitting ? "Checking..." : "Request password reset"}
         </button>
 
         <p className="mt-6 text-center text-sm text-slate-500">

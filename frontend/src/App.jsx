@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthProvider";
 import Dashboard from "./pages/Dashboard";
 import ForgetPassword from "./pages/ForgetPassword";
 import Home from "./pages/Home";
@@ -15,7 +14,7 @@ function AppContent() {
   const isDashboard = pathname.startsWith("/dashboard");
 
   return (
-    <AuthProvider>
+    <>
       {!isDashboard && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,7 +27,7 @@ function AppContent() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!isDashboard && <Footer />}
-    </AuthProvider>
+    </>
   );
 }
 
