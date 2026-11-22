@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -38,6 +39,11 @@ const ForgetPassword = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
+      <Helmet>
+        <title>Reset your password | Auth App</title>
+        <meta name="description" content="Request a password reset for your Auth App account." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate

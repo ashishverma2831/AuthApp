@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 const loginSchema = z.object({
   email: z
@@ -58,6 +59,11 @@ const Login = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Log in | Auth App</title>
+        <meta name="description" content="Log in to your Auth App account." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
         <form
           onSubmit={handleSubmit(onSubmit)}

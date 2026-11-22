@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { registerUser } from "../api/userApi";
+import { Helmet } from "react-helmet-async";
  
 const registerSchema = z
   .object({
@@ -108,6 +109,11 @@ const Register = () => {
  
   return (
     <>
+      <Helmet>
+        <title>Create an account | Auth App</title>
+        <meta name="description" content="Create an Auth App account and get started." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-8">
       <form
         onSubmit={handleSubmit(onSubmit)}

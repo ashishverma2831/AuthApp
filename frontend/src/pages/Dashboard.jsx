@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UserMenu from "../components/UserMenu";
+import { Helmet } from "react-helmet-async";
 
 const navItems = [
   { label: "Overview", href: "/dashboard", active: true },
@@ -54,6 +55,10 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-100 text-left">
+      <Helmet>
+        <title>Dashboard | Auth App</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div

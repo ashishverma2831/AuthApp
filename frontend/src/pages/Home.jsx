@@ -1,4 +1,5 @@
 import HeroSection from "../components/HeroSection";
+import { Helmet } from "react-helmet-async";
 
 const features = [
   {
@@ -68,6 +69,11 @@ function SectionHeading({ eyebrow, title, text }) {
 function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
+      <Helmet>
+        <title>Build Better Products Faster | Auth App</title>
+        <meta name="description" content="Plan, launch, and grow better products with tools for team collaboration, analytics, and project workflows." />
+        <link rel="canonical" href="/" />
+      </Helmet>
 
       <main className="flex-1">
         <HeroSection />
